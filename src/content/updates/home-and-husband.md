@@ -7,4 +7,4 @@ Here's my our little family and our beautiful home. 💛
 
 ![Yoey](../../assets/photos/home-and-husband/hubby-and-i.jpeg)
 ![Apollo](../../assets/photos/home-and-husband/Apollo.jpeg)
-![Home](../../assets/photos/home-and-husband/Home.jpeg)
+![Home](../../assets/photos/home-and-husband/home.jpeg)
