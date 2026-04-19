@@ -29,7 +29,6 @@ src/
   content/
     updates/<slug>.md              ← life update posts
     projects/<slug>.md             ← project pages
-    albums/<slug>.md               ← optional album metadata (title/description)
     config.ts                      ← zod schemas for all collections
   lib/
     album-photos.ts                ← auto-discovers photos in src/assets/photos/<slug>/
@@ -107,8 +106,9 @@ Body text goes here. First paragraph auto-becomes the listing snippet.
 ## Schema notes (src/content/config.ts)
 
 - `updates.cover` is `image().optional()`.
-- `albums.cover` is `image().optional()`; `albums.photos[]` is optional (the
-  auto-discovery supersedes it but it still works as an override).
+- There is no `albums` collection. Photo albums on `/photos` are derived
+  automatically from folders in `src/assets/photos/<slug>/`; the display
+  title comes from the folder slug (title-cased).
 - Images must use the zod `image()` helper for Astro's `<Image>` optimization.
 
 ## Git workflow
