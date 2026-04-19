@@ -2,28 +2,39 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Layout from '../../components/Layout.astro';
+import { imagesForAlbum } from '../../lib/album-photos';
 
 const albums = (await getCollection('albums', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
 const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long' });
+
+// For each album: use the declared cover, else fall back to the first image found in its folder.
+const rows = albums.map((a) => {
+  const auto = imagesForAlbum(a.slug);
+  const cover = a.data.cover ?? auto[0];
+  return { album: a, cover, count: auto.length };
+});
 ---
 <Layout title="Photos" description="Photo albums by Jake." wide>
   <h1>Photos</h1>
   <p class="intro">Moments from trips, projects, and ordinary days.</p>
 
-  {albums.length === 0 ? (
+  {rows.length === 0 ? (
     <p class="muted">No albums yet.</p>
   ) : (
     <div class="photo-grid">
-      {albums.map((a) => (
-        <a href={`/photos/${a.slug}/`} style="border:none">
+      {rows.map(({ album, cover, count }) => (
+        <a href={`/photos/${album.slug}/`} style="border:none">
           <figure>
-            <Image src={a.data.cover} alt={a.data.title} widths={[320, 480, 640]} sizes="(min-width: 720px) 320px, 50vw" />
+            {cover && (
+              <Image src={cover} alt={album.data.title} widths={[320, 480, 640]} sizes="(min-width: 720px) 320px, 50vw" />
+            )}
             <figcaption>
-              <strong style="color:var(--fg)">{a.data.title}</strong>
-              <br />{dateFmt.format(a.data.date)}
+              <strong style="color:var(--fg)">{album.data.title}</strong>
+              <br />{dateFmt.format(album.data.date)}
+              {count > 0 && <span class="muted"> · {count} photo{count === 1 ? '' : 's'}</span>}
             </figcaption>
           </figure>
         </a>
