@@ -1,0 +1,56 @@
+---
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  wide?: boolean;
+  image?: string;
+}
+
+const {
+  title = 'Jake',
+  description = "Jake's corner of the internet — life updates, projects, and photos.",
+  wide = false,
+  image,
+} = Astro.props;
+
+const fullTitle = title === 'Jake' ? title : `${title} · Jake`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
+const ogImage = image ? new URL(image, Astro.site ?? Astro.url).toString() : undefined;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Jake — Updates" href="/updates/rss.xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;500;600&display=swap"
+    />
+  </head>
+  <body>
+    <Header />
+    <main class={wide ? 'wide' : ''}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

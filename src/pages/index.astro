@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Layout from '../components/Layout.astro';
+
+const updates = (await getCollection('updates', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).slice(0, 3);
+
+const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<Layout>
+  <h1>Hi, I'm Jake.</h1>
+  <p class="intro">
+    This is my corner of the internet — a place to share life updates, personal
+    projects, and photos with people I actually want to share them with. No ads,
+    no feeds, no algorithms. Just me.
+  </p>
+
+  <hr />
+
+  <h2>Latest updates</h2>
+  {updates.length === 0 ? (
+    <p class="muted">Nothing posted yet — check back soon.</p>
+  ) : (
+    <ul class="post-list">
+      {updates.map((u) => (
+        <li>
+          {u.data.cover && (
+            <a href={`/updates/${u.slug}/`} style="border:none;display:block;margin-bottom:1rem">
+              <Image
+                src={u.data.cover}
+                alt={u.data.title}
+                widths={[480, 800, 1200]}
+                sizes="(min-width: 720px) 680px, 100vw"
+                style="border-radius:6px"
+              />
+            </a>
+          )}
+          <h3><a href={`/updates/${u.slug}/`}>{u.data.title}</a></h3>
+          <p class="post-meta">{dateFmt.format(u.data.date)}</p>
+          {u.data.summary && <p>{u.data.summary}</p>}
+        </li>
+      ))}
+    </ul>
+  )}
+  <p><a href="/updates">All updates →</a></p>
+
+  {projects.length > 0 && (
+    <>
+      <hr />
+      <h2>What I'm working on</h2>
+      <div class="card-grid">
+        {projects.map((p) => (
+          <article class="card">
+            <span class="tag">{p.data.status}</span>
+            <h3><a href={`/projects/${p.slug}/`}>{p.data.title}</a></h3>
+            <p class="muted">{p.data.summary}</p>
+          </article>
+        ))}
+      </div>
+      <p><a href="/projects">All projects →</a></p>
+    </>
+  )}
+</Layout>

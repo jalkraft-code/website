@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../components/Layout.astro';
+
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+projects.sort((a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0));
+---
+<Layout title="Projects" description="Personal projects Jake is working on.">
+  <h1>Projects</h1>
+  <p class="intro">Things I'm making, shipping, or tinkering with.</p>
+
+  {projects.length === 0 ? (
+    <p class="muted">No projects posted yet.</p>
+  ) : (
+    <div class="card-grid">
+      {projects.map((p) => (
+        <article class="card">
+          <span class="tag">{p.data.status}</span>
+          <h3><a href={`/projects/${p.slug}/`}>{p.data.title}</a></h3>
+          <p class="muted">{p.data.summary}</p>
+        </article>
+      ))}
+    </div>
+  )}
+</Layout>
