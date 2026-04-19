@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // Update SITE to your custom domain once configured in Cloudflare Pages.
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://website.jacob-l-kraft.workers.dev',
   integrations: [sitemap()],
   markdown: {
     shikiConfig: {
