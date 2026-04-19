@@ -188,6 +188,29 @@ pre code { background: transparent; padding: 0; }
 }
 .album-photos figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem; }
 
+.post-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.6rem;
+  margin: 1.2rem 0;
+}
+.post-gallery .post-photo-link {
+  border: none;
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--rule);
+}
+.post-gallery .post-photo-link img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s ease;
+}
+.post-gallery .post-photo-link:hover img { transform: scale(1.03); }
+
 .intro { font-size: 1.1rem; color: var(--muted); max-width: 38em; }
 
 .tag {
