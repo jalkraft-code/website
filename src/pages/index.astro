@@ -12,10 +12,10 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).sl
 
 const dateFmt = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
-const updatesWithImage = updates.map((u) => {
-  const fallback = u.data.cover ?? imagesForAlbum(u.slug)[0];
-  return { entry: u, image: fallback };
-});
+const updatesWithPhotos = updates.map((u) => ({
+  entry: u,
+  photos: imagesForAlbum(u.slug),
+}));
 ---
 <Layout>
   <h1>Hi, I'm Jake.</h1>
@@ -28,26 +28,24 @@ const updatesWithImage = updates.map((u) => {
   <hr />
 
   <h2>Latest updates</h2>
-  {updatesWithImage.length === 0 ? (
+  {updatesWithPhotos.length === 0 ? (
     <p class="muted">Nothing posted yet — check back soon.</p>
   ) : (
     <ul class="post-list">
-      {updatesWithImage.map(({ entry: u, image }) => (
+      {updatesWithPhotos.map(({ entry: u, photos }) => (
         <li>
-          {image && (
-            <a href={`/updates/${u.slug}/`} style="border:none;display:block;margin-bottom:1rem">
-              <Image
-                src={image}
-                alt={u.data.title}
-                widths={[480, 800, 1200]}
-                sizes="(min-width: 720px) 680px, 100vw"
-                style="border-radius:6px"
-              />
-            </a>
-          )}
           <h3><a href={`/updates/${u.slug}/`}>{u.data.title}</a></h3>
           <p class="post-meta">{dateFmt.format(u.data.date)}</p>
           {u.data.summary && <p>{u.data.summary}</p>}
+          {photos.length > 0 && (
+            <div class="thumb-grid">
+              {photos.map((img) => (
+                <a href={`/updates/${u.slug}/`} aria-label={`Open post: ${u.data.title}`}>
+                  <Image src={img} alt="" widths={[160, 320]} sizes="160px" />
+                </a>
+              ))}
+            </div>
+          )}
         </li>
       ))}
     </ul>
