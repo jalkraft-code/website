@@ -17,3 +17,29 @@ export function imagesForAlbum(slug: string): ImageMetadata[] {
     .sort(([a], [b]) => a.toLowerCase().localeCompare(b.toLowerCase()))
     .map(([, mod]) => mod.default);
 }
+
+/**
+ * Turn a folder slug like "home-and-husband" into a display title "Home and husband".
+ */
+export function titleFromSlug(slug: string): string {
+  const spaced = slug.replace(/[-_]+/g, ' ').trim();
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+}
+
+/**
+ * List every album folder in src/assets/photos/, each with its slug, title, and image list.
+ */
+export function listAlbums(): { slug: string; title: string; photos: ImageMetadata[] }[] {
+  const slugs = new Set<string>();
+  for (const path of Object.keys(allImages)) {
+    const match = path.match(/^\/src\/assets\/photos\/([^/]+)\//);
+    if (match) slugs.add(match[1]);
+  }
+  return Array.from(slugs)
+    .sort()
+    .map((slug) => ({
+      slug,
+      title: titleFromSlug(slug),
+      photos: imagesForAlbum(slug),
+    }));
+}
