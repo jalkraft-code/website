@@ -60,6 +60,12 @@ single source of truth. Photos in it automatically appear:
 The post slug = the markdown filename (e.g. `home-and-husband.md` →
 slug `home-and-husband` → photos folder `src/assets/photos/home-and-husband/`).
 
+**Naming convention Jake uses:** he sometimes prefixes slugs with a year-month,
+e.g. `2026-04-winter-photography`. Both the post filename and photo folder must
+use the SAME slug for auto-matching to work. Note that the slug becomes both
+the URL and the auto-generated album title (dashes → spaces, title-cased), so
+keep slugs reasonably readable.
+
 ### Post frontmatter (updates)
 
 ```markdown
@@ -135,8 +141,9 @@ Include the Copilot co-author trailer in commits.
 
 - **About page:** still has placeholder email `hello@example.com`. Jake has not
   decided on a spam strategy (iCloud Hide My Email alias recommended).
-- **`.DS_Store`** files show up inside content folders occasionally — harmless
-  but could be added to `.gitignore` for hygiene.
+- **Photo resizing:** iPhone photos are 3-5 MB each. For photo-heavy posts,
+  recommend resizing via Photos → Export → JPEG Medium (~1600-2000px wide)
+  before committing to keep repo + build times reasonable.
 - **CMS layer:** no plans to add one. Jake is comfortable with the git-based
   workflow.
 
