@@ -6,3 +6,5 @@ cover: ../../assets/photos/home-and-husband/hubby-and-i.jpeg
 ---
 
 Here's my beautiful husband and our beautiful home. 💛
+
+![Apollo](../../assets/photos/home-and-husband/Apollo.jpeg)
