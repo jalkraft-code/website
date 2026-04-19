@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
+import cloudflare from "@astrojs/cloudflare";
+
 function rehypeImageGallery() {
   return (tree) => {
     const newChildren = [];
@@ -52,6 +54,7 @@ function rehypeImageGallery() {
 export default defineConfig({
   site: 'https://website.jacob-l-kraft.workers.dev',
   integrations: [sitemap()],
+
   markdown: {
     shikiConfig: {
       theme: 'github-light',
@@ -59,4 +62,6 @@ export default defineConfig({
     },
     rehypePlugins: [rehypeImageGallery],
   },
+
+  adapter: cloudflare()
 });
