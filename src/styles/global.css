@@ -171,6 +171,23 @@ pre code { background: transparent; padding: 0; }
 }
 .photo-grid figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.35rem; }
 
+/* Album page: show photos at natural aspect ratio, larger, click to open full size. */
+.album-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.album-photos figure { margin: 0; }
+.album-photos a { border: none; display: block; }
+.album-photos img {
+  border-radius: 6px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.album-photos figcaption { color: var(--muted); font-size: 0.9rem; margin-top: 0.4rem; }
+
 .intro { font-size: 1.1rem; color: var(--muted); max-width: 38em; }
 
 .tag {
